@@ -4,7 +4,7 @@
       <div class="loading" v-if="isLoading">
         <img src="../assets/loading.gif" alt="loading">
       </div>
-      <div class="panel">
+      <div class="panel" v-else>
         <div class="panel_header">
           <ul class="clearfix">
             <li class="current-tab">
@@ -41,7 +41,9 @@
               <span
                 :class="{put_top:(topicList.top == true),put_good:(topicList.good == true),topiclist_tab:(topicList.good != true && topicList.top != true)}"
               >{{topicList | tabFormatter}}</span>
-              <a class="topic_title">{{topicList.title}}</a>
+              <router-link :to="{name:'topic',params:{id:topicList.id}}">
+                <a class="topic_title">{{topicList.title}}</a>
+              </router-link>
               <span class="last_active_time">{{topicList.last_reply_at | formatDate}}</span>
             </div>
           </div>
@@ -69,9 +71,10 @@ export default {
           }
         })
         .then(res => {
-          this.isLoading = false;
-          this.topicLists = res.data.data;
-          console.log(res);
+          if (res.data.success == true) {
+            this.isLoading = false;
+            this.topicLists = res.data.data;
+          }
         })
         .catch(err => {
           console.log(err);
@@ -86,6 +89,25 @@ export default {
 </script>
 
 <style scoped>
+*{
+    margin:0;
+    padding:0;
+}
+ul{
+    list-style: none;
+}
+.clearfix::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+a{
+  text-decoration: none;
+}
+.layout{
+  max-width: 80%;
+  margin: 0 auto;
+}
 #main .loading {
   width: 100px;
   height: 100px;
@@ -132,8 +154,8 @@ export default {
   line-height: 50px;
   border-top: 1px solid #f0f0f0;
 }
-#main .panel_inner .cell:hover{
-    background: #f5f5f5;
+#main .panel_inner .cell:hover {
+  background: #f5f5f5;
 }
 #main .panel_inner .cell img {
   width: 30px;
@@ -153,12 +175,6 @@ export default {
   font-size: 10px;
   color: #b4b4b4;
 }
-#main .panel_inner .cell .put_top {
-  background: #80bd01;
-  color: #fff;
-  padding: 2px 4px;
-  border-radius: 3px;
-}
 #main .panel_inner .cell .put_good,
 #main .panel_inner .cell .put_top {
   background: #80bd01;
@@ -172,15 +188,15 @@ export default {
   padding: 2px 4px;
   border-radius: 3px;
 }
-#main .panel_inner .cell a.topic_title{
-    cursor: pointer;
-    display: inline-block;
-    margin-left: 4px;
-    vertical-align: middle;
-    font-size: 16px;
+#main .panel_inner .cell a.topic_title {
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 4px;
+  vertical-align: middle;
+  font-size: 16px;
 }
-#main .panel_inner .cell a.topic_title:active{
-    color:#888;
+#main .panel_inner .cell a.topic_title:active {
+  color: #888;
 }
 #main .panel_inner .cell .last_active_time {
   float: right;

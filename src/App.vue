@@ -1,23 +1,21 @@
 <template>
   <div id="app">
     <NavBar></NavBar>
-    <Main></Main>
+    <router-view name="main"></router-view>
   </div>
 </template>
 
 <script>
 import NavBar from './components/NavBar'
-import Main from './components/Main'
 export default {
   name: 'App',
   components:{
-    NavBar,
-    Main
+    NavBar
   }
 }
 </script>
 
-<style>
+<style scoped>
 *{
     margin:0;
     padding:0;

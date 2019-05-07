@@ -16,16 +16,16 @@ new Vue({
   template: '<App/>'
 })
 
-Vue.filter('tabFormatter',function (topicList) {
-  if(topicList.good == true){
+Vue.filter('tabFormatter', function (topicList) {
+  if (topicList.good == true) {
     return '精华'
-  }else if(topicList.top == true){
+  } else if (topicList.top == true) {
     return '置顶'
-  }else if(topicList.tab == 'ask'){
+  } else if (topicList.tab == 'ask') {
     return '问答'
-  }else if(topicList.tab == 'share'){
+  } else if (topicList.tab == 'share') {
     return '分享'
-  }else{
+  } else {
     return '招聘'
   }
 })
@@ -51,5 +51,4 @@ Vue.filter('formatDate', function (str) {
   } else {
     return parseInt(time / 31536000000) + '年前'
   }
-}
-)
+})
