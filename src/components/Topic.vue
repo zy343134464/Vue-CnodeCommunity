@@ -1,6 +1,5 @@
 <template>
   <div id="topic">
-    <div class="layout">
       <div class="loading" v-if="isLoading">
         <img src="../assets/loading.gif" alt="loading">
       </div>
@@ -24,8 +23,12 @@
           <div class="panel_replies_header">{{topic.replies.length}} 回复</div>
           <div class="panel_replies_cells">
             <div class="replies clearfix" v-for="(reply,index) in topic.replies">
-              <img :src="reply.author.avatar_url">
-              <span class="reply_author">{{reply.author.loginname}}</span>
+              <router-link :to="{name:'userInfo',params:{name:reply.author.loginname}}">
+                <img :src="reply.author.avatar_url">
+              </router-link>
+              <router-link :to="{name:'userInfo',params:{name:reply.author.loginname}}">
+                <span class="reply_author">{{reply.author.loginname}}</span>
+              </router-link>
               <span>{{index+1}}楼</span>
               <div class="ups">
                 <span v-if="reply.ups.length>0">赞{{reply.ups.length}}</span>
@@ -34,7 +37,6 @@
               <p v-html="reply.content"></p>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -55,7 +57,6 @@ export default {
         .then(res => {
           if (res.data.success == true) {
             this.isLoading = false;
-            console.log(res.data.data);
             this.topic = res.data.data;
           }
         })
@@ -72,10 +73,6 @@ export default {
 </script>
 
 <style>
-.layout {
-  max-width: 80%;
-  margin: 0 auto;
-}
 #topic .loading {
   width: 100px;
   height: 100px;
@@ -139,25 +136,28 @@ export default {
   background-color: #f6f6f6;
   border-radius: 3px 3px 0 0;
 }
-#topic .replies{
-  padding:10px;
-  border-top:1px solid #e1e1e1;
+#topic .replies {
+  padding: 10px;
+  border-top: 1px solid #e1e1e1;
 }
-#topic .replies img{
-    width: 30px;
-    height: 30px;
-    border-radius: 3px;
-    vertical-align: top;
-    margin-right: 8px;
+#topic .replies img {
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  vertical-align: top;
+  margin-right: 8px;
 }
-#topic .replies p{
-    padding-left: 40px;
-    color: #333;
-    font-size: 16px;
+#topic .replies p {
+  padding-left: 40px;
+  color: #333;
+  font-size: 16px;
 }
-#topic .replies .ups{
-    float: right;
-    margin-right: 10px;
+#topic .replies .ups {
+  float: right;
+  margin-right: 10px;
 }
-
+.panel_replies a{
+  text-decoration: none;
+  color:#aaa;
+}
 </style>

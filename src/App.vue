@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <NavBar></NavBar>
-    <router-view name="main"></router-view>
+    <div class="layout">
+      <router-view name="main"></router-view>
+    </div>
   </div>
 </template>
 
@@ -34,5 +36,8 @@ a{
 .layout{
   max-width: 80%;
   margin: 0 auto;
+}
+#app{
+  background: #e1e1e1;
 }
 </style>

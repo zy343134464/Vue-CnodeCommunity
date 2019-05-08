@@ -1,6 +1,5 @@
 <template>
   <div id="main">
-    <div class="layout">
       <div class="loading" v-if="isLoading">
         <img src="../assets/loading.gif" alt="loading">
       </div>
@@ -50,7 +49,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -103,10 +101,7 @@ ul{
 }
 a{
   text-decoration: none;
-}
-.layout{
-  max-width: 80%;
-  margin: 0 auto;
+  color: #000;
 }
 #main .loading {
   width: 100px;
