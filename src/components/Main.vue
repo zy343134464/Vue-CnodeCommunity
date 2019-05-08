@@ -40,7 +40,7 @@
               <span
                 :class="{put_top:(topicList.top == true),put_good:(topicList.good == true),topiclist_tab:(topicList.good != true && topicList.top != true)}"
               >{{topicList | tabFormatter}}</span>
-              <router-link :to="{name:'topic',params:{id:topicList.id}}">
+              <router-link :to="{name:'topic',params:{id:topicList.id,name:topicList.author.loginname}}">
                 <a class="topic_title">{{topicList.title}}</a>
               </router-link>
               <span class="last_active_time">{{topicList.last_reply_at | formatDate}}</span>

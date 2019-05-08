@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Main from '../components/Main'
 import Topic from '../components/Topic'
 import UserInfo from '../components/UserInfo'
+import siderBar from '../components/siderBar'
 
 Vue.use(Router)
 
@@ -17,9 +18,10 @@ export default new Router({
     },
     {
       name: 'topic',
-      path: '/topic/:id',
+      path: '/topic/:id&author=:name',
       components: {
-        main: Topic
+        main: Topic,
+        siderBar: siderBar
       }
     },
     {

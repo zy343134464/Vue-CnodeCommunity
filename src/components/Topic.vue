@@ -1,42 +1,42 @@
 <template>
   <div id="topic">
-      <div class="loading" v-if="isLoading">
-        <img src="../assets/loading.gif" alt="loading">
+    <div class="loading" v-if="isLoading">
+      <img src="../assets/loading.gif" alt="loading">
+    </div>
+    <div class="panel" v-else>
+      <div class="panel_header">
+        <span
+          :class="{put_top:(topic.top == true),put_good:(topic.good == true),topiclist_tab:(topic.good != true && topic.top != true)}"
+        >{{topic | tabFormatter}}</span>
+        <span class="panel_header_title">{{topic.title}}</span>
+        <div class="changes">
+          <span>•发布于：{{topic.create_at | formatDate}}</span>
+          <span>
+            • 作者：
+            {{topic.author.loginname}}
+          </span>
+          <span>• {{topic.visit_count}}次浏览</span>
+        </div>
       </div>
-      <div class="panel" v-else>
-        <div class="panel_header">
-          <span
-            :class="{put_top:(topic.top == true),put_good:(topic.good == true),topiclist_tab:(topic.good != true && topic.top != true)}"
-          >{{topic | tabFormatter}}</span>
-          <span class="panel_header_title">{{topic.title}}</span>
-          <div class="changes">
-            <span>•发布于：{{topic.create_at | formatDate}}</span>
-            <span>
-              • 作者：
-              {{topic.author.loginname}}
-            </span>
-            <span>• {{topic.visit_count}}次浏览</span>
+      <div class="panel_content" v-html="topic.content"></div>
+      <div class="panel_replies">
+        <div class="panel_replies_header">{{topic.replies.length}} 回复</div>
+        <div class="panel_replies_cells">
+          <div class="replies clearfix" v-for="(reply,index) in topic.replies">
+            <router-link :to="{name:'userInfo',params:{name:reply.author.loginname}}">
+              <img :src="reply.author.avatar_url">
+            </router-link>
+            <router-link :to="{name:'userInfo',params:{name:reply.author.loginname}}">
+              <span class="reply_author">{{reply.author.loginname}}</span>
+            </router-link>
+            <span>{{index+1}}楼</span>
+            <div class="ups">
+              <span v-if="reply.ups.length>0">赞{{reply.ups.length}}</span>
+              <span v-else></span>
+            </div>
+            <p v-html="reply.content"></p>
           </div>
         </div>
-        <div class="panel_content" v-html="topic.content"></div>
-        <div class="panel_replies">
-          <div class="panel_replies_header">{{topic.replies.length}} 回复</div>
-          <div class="panel_replies_cells">
-            <div class="replies clearfix" v-for="(reply,index) in topic.replies">
-              <router-link :to="{name:'userInfo',params:{name:reply.author.loginname}}">
-                <img :src="reply.author.avatar_url">
-              </router-link>
-              <router-link :to="{name:'userInfo',params:{name:reply.author.loginname}}">
-                <span class="reply_author">{{reply.author.loginname}}</span>
-              </router-link>
-              <span>{{index+1}}楼</span>
-              <div class="ups">
-                <span v-if="reply.ups.length>0">赞{{reply.ups.length}}</span>
-                <span v-else></span>
-              </div>
-              <p v-html="reply.content"></p>
-            </div>
-          </div>
       </div>
     </div>
   </div>
@@ -68,11 +68,19 @@ export default {
   beforeMount() {
     this.isLoading = true;
     this.getArticleData();
+  },
+  watch: {
+    $route(to, from) {
+      this.getArticleData();
+    }
   }
 };
 </script>
 
 <style>
+#topic {
+  width: 75%;
+}
 #topic .loading {
   width: 100px;
   height: 100px;
@@ -156,8 +164,8 @@ export default {
   float: right;
   margin-right: 10px;
 }
-.panel_replies a{
+.panel_replies a {
   text-decoration: none;
-  color:#aaa;
+  color: #aaa;
 }
 </style>

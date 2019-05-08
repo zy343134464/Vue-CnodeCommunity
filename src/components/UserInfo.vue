@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div id="user">
     <div class="loading" v-if="isLoading">
       <img src="../assets/loading.gif" alt="loading">
     </div>
@@ -85,7 +85,7 @@ li{
 a{
     font-size: 16px;
 }
-.user {
+#user {
   margin-top: 10px;
 }
 header {
