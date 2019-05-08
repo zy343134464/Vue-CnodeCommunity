@@ -20,6 +20,21 @@
           </div>
         </div>
         <div class="panel_content" v-html="topic.content"></div>
+        <div class="panel_replies">
+          <div class="panel_replies_header">{{topic.replies.length}} 回复</div>
+          <div class="panel_replies_cells">
+            <div class="replies clearfix" v-for="(reply,index) in topic.replies">
+              <img :src="reply.author.avatar_url">
+              <span class="reply_author">{{reply.author.loginname}}</span>
+              <span>{{index+1}}楼</span>
+              <div class="ups">
+                <span v-if="reply.ups.length>0">赞{{reply.ups.length}}</span>
+                <span v-else></span>
+              </div>
+              <p v-html="reply.content"></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -110,12 +125,39 @@ export default {
   color: #838383;
   margin-top: 14px;
 }
-#topic .panel_content{
-    font-size: 14px;
-    word-break: break-word;
-    padding: 10px;
+#topic .panel_content {
+  font-size: 14px;
+  word-break: break-word;
+  padding: 10px;
 }
-#topic .panel_content img{
-    width: 80%;
+#topic .panel_content img {
+  width: 80%;
 }
+#topic .panel_replies_header {
+  padding: 10px;
+  border-top: 15px solid #e1e1e1;
+  background-color: #f6f6f6;
+  border-radius: 3px 3px 0 0;
+}
+#topic .replies{
+  padding:10px;
+  border-top:1px solid #e1e1e1;
+}
+#topic .replies img{
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    vertical-align: top;
+    margin-right: 8px;
+}
+#topic .replies p{
+    padding-left: 40px;
+    color: #333;
+    font-size: 16px;
+}
+#topic .replies .ups{
+    float: right;
+    margin-right: 10px;
+}
+
 </style>
