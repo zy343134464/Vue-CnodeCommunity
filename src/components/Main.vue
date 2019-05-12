@@ -1,70 +1,80 @@
 <template>
   <div id="main">
-      <div class="loading" v-if="isLoading">
-        <img src="../assets/loading.gif" alt="loading">
+    <div class="loading" v-if="isLoading">
+      <img src="../assets/loading.gif" alt="loading">
+    </div>
+    <div class="panel" v-else>
+      <div class="panel_header">
+        <ul class="clearfix">
+          <li class="current-tab">
+            <a href="#">全部</a>
+          </li>
+          <li>
+            <a href="#">精华</a>
+          </li>
+          <li>
+            <a href="#">分享</a>
+          </li>
+          <li>
+            <a href="#">问答</a>
+          </li>
+          <li>
+            <a href="#">招聘</a>
+          </li>
+          <li>
+            <a href="#">客户端测试</a>
+          </li>
+        </ul>
       </div>
-      <div class="panel" v-else>
-        <div class="panel_header">
-          <ul class="clearfix">
-            <li class="current-tab">
-              <a href="#">全部</a>
-            </li>
-            <li>
-              <a href="#">精华</a>
-            </li>
-            <li>
-              <a href="#">分享</a>
-            </li>
-            <li>
-              <a href="#">问答</a>
-            </li>
-            <li>
-              <a href="#">招聘</a>
-            </li>
-            <li>
-              <a href="#">客户端测试</a>
-            </li>
-          </ul>
-        </div>
-        <div class="panel_inner">
-          <div class="topic_list">
-            <div class="cell clearfix" v-for="topicList in topicLists">
-              <a href="#">
-                <img :src="topicList.author.avatar_url" alt="user_avatar">
-              </a>
-              <span class="reply_count">
-                <span class="count_of_replies">{{topicList.reply_count}}</span>
-                /
-                <span class="count_of_visits">{{topicList.visit_count}}</span>
-              </span>
-              <span
-                :class="{put_top:(topicList.top == true),put_good:(topicList.good == true),topiclist_tab:(topicList.good != true && topicList.top != true)}"
-              >{{topicList | tabFormatter}}</span>
-              <router-link :to="{name:'topic',params:{id:topicList.id,name:topicList.author.loginname}}">
-                <a class="topic_title">{{topicList.title}}</a>
-              </router-link>
-              <span class="last_active_time">{{topicList.last_reply_at | formatDate}}</span>
-            </div>
+      <div class="panel_inner">
+        <div class="topic_list">
+          <div class="cell clearfix" v-for="topicList in topicLists">
+            <a href="#">
+              <img :src="topicList.author.avatar_url" alt="user_avatar">
+            </a>
+            <span class="reply_count">
+              <span class="count_of_replies">{{topicList.reply_count}}</span>
+              /
+              <span class="count_of_visits">{{topicList.visit_count}}</span>
+            </span>
+            <span
+              :class="{put_top:(topicList.top == true),put_good:(topicList.good == true),topiclist_tab:(topicList.good != true && topicList.top != true)}"
+            >{{topicList | tabFormatter}}</span>
+            <router-link
+              :to="{name:'topic',params:{id:topicList.id,name:topicList.author.loginname}}"
+            >
+              <a class="topic_title">{{topicList.title}}</a>
+            </router-link>
+            <span class="last_active_time">{{topicList.last_reply_at | formatDate}}</span>
           </div>
         </div>
       </div>
+      <div class="pagiNation_wrap">
+        <pagiNation @handleList="renderList"></pagiNation>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
+import pagiNation from "../components/PagiNation";
 export default {
   data() {
     return {
       isLoading: false,
-      topicLists: []
+      topicLists: [],
+      postpage: 1
     };
+  },
+  components: {
+    pagiNation
   },
   methods: {
     getData() {
       this.$http
         .get("https://cnodejs.org/api/v1/topics", {
           params: {
-            page: 1,
+            page: this.postpage,
             limit: 20
           }
         })
@@ -77,6 +87,10 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    renderList(value) {
+      this.postpage = value;
+      this.getData();
     }
   },
   beforeMount() {
@@ -87,19 +101,19 @@ export default {
 </script>
 
 <style scoped>
-*{
-    margin:0;
-    padding:0;
+* {
+  margin: 0;
+  padding: 0;
 }
-ul{
-    list-style: none;
+ul {
+  list-style: none;
 }
-.clearfix::after{
-    content: '';
-    display: block;
-    clear: both;
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
 }
-a{
+a {
   text-decoration: none;
   color: #000;
 }
